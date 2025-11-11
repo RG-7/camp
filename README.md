@@ -32,7 +32,7 @@ Camp is a lightweight email marketing solution built with Go. Send campaigns, ma
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/camp.git
+git clone https://github.com/codersgyan/camp.git
 cd camp
 ```
 
