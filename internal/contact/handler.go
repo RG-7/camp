@@ -30,7 +30,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	createdId, err := h.repo.CreateContactOrUpsertTags(&contactBody)
 	if err != nil {
 		resp := map[string]string{
-			"message": err.Error(),
+			"message": "Internal server error",
 		}
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(resp)
