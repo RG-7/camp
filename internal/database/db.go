@@ -16,7 +16,7 @@ func Connect(dbPath string) (*sql.DB, error) {
 
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
-		return nil, fmt.Errorf("ailed to open the database: %w", err)
+		return nil, fmt.Errorf("failed to open the database: %w", err)
 	}
 
 	if err := db.Ping(); err != nil {

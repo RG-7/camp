@@ -31,7 +31,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		resp := map[string]string{
 			"message": err.Error(),
 		}
-		w.WriteHeader(http.StatusBadRequest)
+		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(resp)
 		return
 	}

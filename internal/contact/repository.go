@@ -120,6 +120,10 @@ func (r *Repository) CreateOrUpsertTags(c *Contact) (int64, error) {
 	if err != nil {
 		return 0, fmt.Errorf("failed to create a contact: %w", err)
 	}
+	lastId, err := createdContact.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
 
 	// if tags exists create tags
 	if len(c.Tags) > 0 {
@@ -146,9 +150,6 @@ func (r *Repository) CreateOrUpsertTags(c *Contact) (int64, error) {
 
 		rows, err := txn.Query(query, args...)
 		if err != nil {
-			if err == sql.ErrNoRows {
-				return 0, nil
-			}
 			return 0, err
 		}
 
@@ -171,11 +172,6 @@ func (r *Repository) CreateOrUpsertTags(c *Contact) (int64, error) {
 		valueStrings := make([]string, 0, len(tags))
 		valueArgs := make([]interface{}, 0, len(tags)*2)
 
-		lastId, err := createdContact.LastInsertId()
-		if err != nil {
-			return 0, err
-		}
-
 		for _, tag := range tags {
 			valueStrings = append(valueStrings, "(?, ?)")
 			valueArgs = append(valueArgs, lastId, tag.ID)
@@ -196,12 +192,7 @@ func (r *Repository) CreateOrUpsertTags(c *Contact) (int64, error) {
 		return 0, err
 	}
 
-	id, err := createdContact.LastInsertId()
-	if err != nil {
-		return 0, nil
-	}
-
-	return id, nil
+	return lastId, nil
 }
 
 func (r *Repository) GetByEmail(email string) (Contact, error) {
